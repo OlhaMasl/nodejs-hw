@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 import 'dotenv/config';
 
 import { errors } from "celebrate";
@@ -7,6 +8,7 @@ import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import authRoutes from './routes/authRoutes.js';
 import notesRoutes from './routes/notesRoutes.js';
 
 
@@ -19,7 +21,9 @@ app.use(express.json({
   type: ['application/json', 'application/vnd.api+json'],
 }));
 app.use(cors());
+app.use(cookieParser());
 
+app.use(authRoutes);
 app.use(notesRoutes);
 
 app.use(notFoundHandler);
